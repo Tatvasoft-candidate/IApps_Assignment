@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  iapps_assignment:
+    image: iapps:1.0
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    networks:
+      - iapps-network
+    depends_on:
+      - mysqldb
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: avnish
+      MYSQL_PORT: 3306
+    
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:8
+    volumes:
+      -  /home/user/Desktop/db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - iapps-network
+    environment:
+      MYSQL_ROOT_PASSWORD: avnish
+      MYSQL_DATABASE: iapps
+    
+
+networks:
+  iapps-network:

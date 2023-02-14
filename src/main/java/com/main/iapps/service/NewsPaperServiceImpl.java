@@ -1,7 +1,5 @@
 package com.main.iapps.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -21,8 +19,6 @@ import javax.xml.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +32,8 @@ import com.main.iapps.entity.NewsPaper;
 import com.main.iapps.payload.NewsPaperResponse;
 
 /**
- * This class is to handle all the methods that rest end-points are using of fetching the data and uploading the file.
+ * This class is to handle all the methods that rest end-points are using of
+ * fetching the data and uploading the file.
  *
  * @author Tatvasoft
  * @since 14-February-2023
@@ -55,17 +52,15 @@ public class NewsPaperServiceImpl implements NewsPaperService {
 
 	@Override
 	public void save(MultipartFile file) throws IOException {
-		
+
 		log.info("File Uploading method called");
 
-		Resource resource = new ClassPathResource("newspaper-details.xsd", NewsPaperServiceImpl.class.getClassLoader());
+		String xsd = "newspaper-details.xsd";
+		InputStream is = getResourceFileAsInputStream(xsd);
 
-		InputStream input = resource.getInputStream();
-
-		File xsd = resource.getFile();
 		String fileName = file.getOriginalFilename();
 
-		if (validateXMLSchema(file.getInputStream(), new FileInputStream(xsd))) {
+		if (validateXMLSchema(file.getInputStream(), is)) {
 
 			List<NewsPaper> newsPaper = parseXMLFile(file, fileName);
 
@@ -81,7 +76,7 @@ public class NewsPaperServiceImpl implements NewsPaperService {
 
 	@Override
 	public NewsPaperResponse getAllNewsPapers(Pageable pageable) {
-		
+
 		log.info("List of All NewsPapers method called");
 
 		Page<NewsPaper> getNewsPapers = newsPaperRepository.findAll(pageable);
@@ -97,7 +92,7 @@ public class NewsPaperServiceImpl implements NewsPaperService {
 	}
 
 	public NewsPaperResponse getNewsPaperByName(String name, Pageable pageable) {
-		
+
 		log.info("Find NewsPaperByName method called");
 
 		Page<NewsPaper> getNewsPaperByName = newsPaperRepository.findByNewsPaperNameContains(name, pageable);
@@ -109,8 +104,15 @@ public class NewsPaperServiceImpl implements NewsPaperService {
 
 		return newsPaperResponse;
 	}
-	
-	
+
+	/*
+	 * This method is to fetch xsd file from classpath and convert it to inputstream
+	 */
+	private InputStream getResourceFileAsInputStream(String xsd) {
+		ClassLoader classLoader = NewsPaperServiceImpl.class.getClassLoader();
+		return classLoader.getResourceAsStream(xsd);
+	}
+
 	/*
 	 * This method is defined to validate XML Schema against XSD.
 	 */
@@ -170,8 +172,7 @@ public class NewsPaperServiceImpl implements NewsPaperService {
 		newsPaperResponse.setLast(getNewsPapers.isLast());
 		return newsPaperResponse;
 	}
-	
-	
+
 	/*
 	 * This method has defined to map to DTO for better response.
 	 */
