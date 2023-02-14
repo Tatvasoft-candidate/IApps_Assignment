@@ -14,3 +14,7 @@ Schema is created using liquibase.
 
 Schema/Database -> iapps 
 Table - Iapps
+
+Steps to run -> Run docker compose file by following command.
+
+(docker-compose up --build) from the project working directory
