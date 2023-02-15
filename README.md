@@ -1,4 +1,6 @@
 IApps_Assignmnt
+
+
 This is a utility to upload XML File and validate XML against XSD schema and after that the required data will be parsed and saved in MySQL DataBase
 
 Liquibase is used to create Database(iapps) and table news_paper automatically.
@@ -48,7 +50,8 @@ Note: Please change your db_password in application.properties and .
   docker rm <container_id>
   
 5) Once jar is built, Run the project by docker-compose.
-  docker-compose up --build.
+  
+   docker-compose up --build.
   
 Project will run in the above url.
 
