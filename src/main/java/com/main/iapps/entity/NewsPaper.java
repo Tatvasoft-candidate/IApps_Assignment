@@ -2,6 +2,7 @@ package com.main.iapps.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -9,15 +10,29 @@ import javax.persistence.Id;
 public class NewsPaper {
 
 	@Id
+	@Column(name = "id")
 	private String id;
+
+	@Column(name = "news_paper_name")
 	private String newsPaperName;
+
+	@Column(name = "width")
 	private String width;
+
+	@Column(name = "height")
 	private String height;
+
+	@Column(name = "dpi")
 	private String dpi;
+
+	@Column(name = "file_name")
 	private String fileName;
+
+	@Column(name = "upload_time")
 	private LocalDateTime uploadTime;
-	
-	public NewsPaper() {}
+
+	public NewsPaper() {
+	}
 
 	public NewsPaper(String newsPaperName, String width, String height, String dpi) {
 		this.newsPaperName = newsPaperName;
@@ -87,6 +102,5 @@ public class NewsPaper {
 		return "NewsPaper [id=" + id + ", newsPaperName=" + newsPaperName + ", width=" + width + ", height=" + height
 				+ ", dpi=" + dpi + ", fileName=" + fileName + ", uploadTime=" + uploadTime + "]";
 	}
-	
-	
+
 }
